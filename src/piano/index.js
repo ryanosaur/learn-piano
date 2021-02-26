@@ -1,46 +1,78 @@
 import { curry } from "ramda";
-import { KEY_MAP } from "./utils";
+import { useEffect, useState } from "react";
+import { onMIDISuccess, onMIDIFailure } from "./midi";
+import { KEY_MAP, AudioHandler } from "./utils";
 
-const getKeyStateFunction = curry((midiInput, key) => {
-  const keyValue = KEY_MAP[key];
-  const { value, isActive } = midiInput[keyValue] || {};
-  return isActive && value === keyValue;
-});
+function Piano() {
+  const [midiInput, setMidiResponse] = useState({});
 
-function Piano({ midiInput }) {
-  const isKeyActive = getKeyStateFunction(midiInput || {});
+  function getMIDIMessage(midiMessage) {
+    const [state, value, intensity] = midiMessage.data;
+    const isActive = state >= 144;
+    setMidiResponse((prevState) => {
+      return {
+        ...prevState,
+        [value]: { isActive, value, intensity },
+      };
+    });
+  }
+
+  const handleMidiResponse = (midiInput) =>
+    onMIDISuccess(midiInput, getMIDIMessage);
+
+  useEffect(
+    () => navigator.requestMIDIAccess().then(handleMidiResponse, onMIDIFailure),
+    []
+  );
+
   return (
     <div>
       <div>
         <ul className="set">
-          <li className={`white c ${isKeyActive("C3") && " active"}`}></li>
-          <li className={`white b ${isKeyActive("B2") && " active"}`}></li>
-          <li className={`black as ${isKeyActive("AS2") && " active"}`}></li>
-          <li className={`white a ${isKeyActive("A2") && " active"}`}></li>
-          <li className={`black gs ${isKeyActive("GS2") && " active"}`}></li>
-          <li className={`white g ${isKeyActive("G2") && " active"}`}></li>
-          <li className={`black fs ${isKeyActive("FS2") && " active"}`}></li>
-          <li className={`white f ${isKeyActive("F2") && " active"}`}></li>
-          <li className={`white e ${isKeyActive("E2") && " active"}`}></li>
-          <li className={`black ds ${isKeyActive("DS2") && " active"}`}></li>
-          <li className={`white d ${isKeyActive("D2") && " active"}`}></li>
-          <li className={`black cs ${isKeyActive("CS2") && " active"}`}></li>
-          <li className={`white c ${isKeyActive("C2") && " active"}`}></li>
-          <li className={`white b ${isKeyActive("B1") && " active"}`}></li>
-          <li className={`black as ${isKeyActive("AS1") && " active"}`}></li>
-          <li className={`white a ${isKeyActive("A1") && " active"}`}></li>
-          <li className={`black gs ${isKeyActive("GS1") && " active"}`}></li>
-          <li className={`white g ${isKeyActive("G1") && " active"}`}></li>
-          <li className={`black fs ${isKeyActive("FS1") && " active"}`}></li>
-          <li className={`white f ${isKeyActive("F1") && " active"}`}></li>
-          <li className={`white e ${isKeyActive("E1") && " active"}`}></li>
-          <li className={`black ds ${isKeyActive("DS1") && " active"}`}></li>
-          <li className={`white d ${isKeyActive("D1") && " active"}`}></li>
-          <li className={`black cs ${isKeyActive("CS1") && " active"}`}></li>
-          <li className={`white c ${isKeyActive("C1") && " active"}`}></li>
+          <PianoKey keyType="white" note="C3" midiInput={midiInput} />
+          <PianoKey keyType="white" note="B2" midiInput={midiInput} />
+          <PianoKey keyType="black" note="AS2" midiInput={midiInput} />
+          <PianoKey keyType="white" note="A2" midiInput={midiInput} />
+          <PianoKey keyType="black" note="GS2" midiInput={midiInput} />
+          <PianoKey keyType="white" note="G2" midiInput={midiInput} />
+          <PianoKey keyType="black" note="FS2" midiInput={midiInput} />
+          <PianoKey keyType="white" note="F2" midiInput={midiInput} />
+          <PianoKey keyType="white" note="E2" midiInput={midiInput} />
+          <PianoKey keyType="black" note="DS2" midiInput={midiInput} />
+          <PianoKey keyType="white" note="D2" midiInput={midiInput} />
+          <PianoKey keyType="black" note="CS2" midiInput={midiInput} />
+          <PianoKey keyType="white" note="C2" midiInput={midiInput} />
+          <PianoKey keyType="white" note="B1" midiInput={midiInput} />
+          <PianoKey keyType="black" note="AS1" midiInput={midiInput} />
+          <PianoKey keyType="white" note="A1" midiInput={midiInput} />
+          <PianoKey keyType="black" note="GS1" midiInput={midiInput} />
+          <PianoKey keyType="white" note="G1" midiInput={midiInput} />
+          <PianoKey keyType="black" note="FS1" midiInput={midiInput} />
+          <PianoKey keyType="white" note="F1" midiInput={midiInput} />
+          <PianoKey keyType="white" note="E1" midiInput={midiInput} />
+          <PianoKey keyType="black" note="DS1" midiInput={midiInput} />
+          <PianoKey keyType="white" note="D1" midiInput={midiInput} />
+          <PianoKey keyType="black" note="CS1" midiInput={midiInput} />
+          <PianoKey keyType="white" note="C1" midiInput={midiInput} />
         </ul>
       </div>
     </div>
+  );
+}
+
+function PianoKey({ keyType, note, midiInput }) {
+  const keyValue = KEY_MAP[note];
+  const { value: midiValue, isActive } = midiInput[keyValue] || {};
+  const isKeyActive = () => isActive && midiValue === keyValue;
+  const lowerKey = note.replace(/[0-9]/g, "").toLowerCase();
+  const frequency = AudioHandler.midiToFrequency(midiValue);
+  if (isKeyActive()) {
+    AudioHandler.playSound(frequency);
+  } else {
+    AudioHandler.stopSound();
+  }
+  return (
+    <li className={`${keyType} ${lowerKey} ${isKeyActive() && " active"}`} />
   );
 }
 
