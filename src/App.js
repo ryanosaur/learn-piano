@@ -9,7 +9,10 @@ function App() {
   function getMIDIMessage(midiMessage) {
     const [state, value, intensity] = midiMessage.data;
     const isActive = state === 144;
-    setMidiResponse({ isActive, value, intensity });
+    setMidiResponse((prevState) => ({
+      ...prevState,
+      [value]: { isActive, value, intensity },
+    }));
   }
 
   const handleMidiResponse = (midiInput) =>
