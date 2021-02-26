@@ -74,8 +74,8 @@ li {
 }
 
 ul .white {
-  height: 16em;
-  width: 4em;
+  height: 16rem;
+  width: 4rem;
   z-index: 1;
   border-left: 1px solid #bbb;
   border-bottom: 1px solid #bbb;
@@ -96,9 +96,9 @@ ul .white.active {
 }
 
 .black {
-  height: 8em;
-  width: 2em;
-  margin: 0 0 0 -1em;
+  height: 8rem;
+  width: 2rem;
+  margin: 0 0 0 -1rem;
   z-index: 2;
   border: 1px solid #000;
   border-radius: 0 0 3px 3px;
@@ -119,7 +119,7 @@ ul .white.active {
 .f,
 .d,
 .c {
-  margin: 0 0 0 -1em;
+  margin: 0 0 0 -1rem;
 }
 
 ul li:first-child {
