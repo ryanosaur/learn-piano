@@ -1,22 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useEffect, useState } from "react";
+import { onMIDISuccess, onMIDIFailure } from "./midi";
+import Piano from "./piano";
 
 function App() {
+  const [midiValues, setMidiResponse] = useState();
+
+  function getMIDIMessage(midiMessage) {
+    const [state, value, intensity] = midiMessage.data;
+    const isActive = state === 144;
+    setMidiResponse({ isActive, value, intensity });
+  }
+
+  const handleMidiResponse = (midiInput) =>
+    onMIDISuccess(midiInput, getMIDIMessage);
+
+  useEffect(
+    () => navigator.requestMIDIAccess().then(handleMidiResponse, onMIDIFailure),
+    []
+  );
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <Piano midiInput={midiValues} />
       </header>
     </div>
   );
