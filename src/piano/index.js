@@ -1,4 +1,3 @@
-import { curry } from "ramda";
 import { useEffect, useState } from "react";
 import { onMIDISuccess, onMIDIFailure } from "./midi";
 import { KEY_MAP, WAVEFORM, AudioHandler } from "./utils";
@@ -62,10 +61,10 @@ function Piano() {
 
 function PianoKey({ keyType, note, midiInput }) {
   const [audioHandler] = useState(new AudioHandler());
+  const [lowerKey] = useState(note.replace(/[0-9]/g, "").toLowerCase());
   const keyValue = KEY_MAP[note];
   const { value: midiValue, isActive, intensity } = midiInput[keyValue] || {};
   const isKeyActive = () => isActive && midiValue === keyValue;
-  const lowerKey = note.replace(/[0-9]/g, "").toLowerCase();
   const frequency = audioHandler.midiToFrequency(midiValue);
   audioHandler.setWaveform(WAVEFORM.TRIANGLE);
   if (isKeyActive()) {
