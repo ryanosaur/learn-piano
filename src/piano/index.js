@@ -1,7 +1,7 @@
 import { curry } from "ramda";
 import { useEffect, useState } from "react";
 import { onMIDISuccess, onMIDIFailure } from "./midi";
-import { KEY_MAP, AudioHandler } from "./utils";
+import { KEY_MAP, WAVEFORM, AudioHandler } from "./utils";
 
 function Piano() {
   const [midiInput, setMidiResponse] = useState({});
@@ -63,17 +63,27 @@ function Piano() {
 function PianoKey({ keyType, note, midiInput }) {
   const [audioHandler] = useState(new AudioHandler());
   const keyValue = KEY_MAP[note];
-  const { value: midiValue, isActive } = midiInput[keyValue] || {};
+  const { value: midiValue, isActive, intensity } = midiInput[keyValue] || {};
   const isKeyActive = () => isActive && midiValue === keyValue;
   const lowerKey = note.replace(/[0-9]/g, "").toLowerCase();
   const frequency = audioHandler.midiToFrequency(midiValue);
+  audioHandler.setWaveform(WAVEFORM.TRIANGLE);
   if (isKeyActive()) {
-    audioHandler.playSound(frequency);
+    audioHandler.playSound(frequency, intensity);
   } else {
     audioHandler.stopSound();
   }
   return (
-    <li className={`${keyType} ${lowerKey} ${isKeyActive() && " active"}`} />
+    <li className={`${keyType} ${lowerKey} ${isKeyActive() && " active"}`}>
+      <div
+        style={{
+          height: "100%",
+          width: "100%",
+          background: "red",
+          opacity: !!intensity ? intensity / 100 : 0,
+        }}
+      />
+    </li>
   );
 }
 

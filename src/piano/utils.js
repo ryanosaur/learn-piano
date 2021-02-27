@@ -1,3 +1,10 @@
+const WAVEFORM = {
+  SINE: "sine",
+  SQUARE: "square",
+  SAWTOOTH: "sawtooth",
+  TRIANGLE: "triangle",
+};
+
 function AudioHandler() {
   this.context = null;
   this.oscillator = null;
@@ -9,7 +16,7 @@ function AudioHandler() {
       this.oscillator.connect(this.context.destination);
     }
   };
-  this.playSound = function (frequency, _type) {
+  this.playSound = function (frequency, _intensity) {
     this.getOrCreateContext();
     this.oscillator.frequency.setTargetAtTime(
       frequency,
@@ -29,6 +36,10 @@ function AudioHandler() {
   };
   this.midiToFrequency = function (keyValue) {
     return Math.pow(2, (keyValue - 69) / 12) * 440;
+  };
+  this.setWaveform = function (waveform = WAVEFORM.SINE) {
+    this.getOrCreateContext();
+    this.oscillator.type = waveform;
   };
 }
 
@@ -60,4 +71,4 @@ const KEY_MAP = {
   C3: 72,
 };
 
-export { KEY_MAP, AudioHandler };
+export { KEY_MAP, WAVEFORM, AudioHandler };
