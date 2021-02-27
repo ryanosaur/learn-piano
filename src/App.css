@@ -36,7 +36,7 @@
 }
 
 /* PIANO */
-/* CSS stolen from here: https://codepen.io/zastrow/pen/oDBki */
+/* Inspired by: https://codepen.io/zastrow/pen/oDBki */
 
 * {
   box-sizing: border-box;
@@ -46,24 +46,6 @@ body {
   margin: 0;
   background: #222;
 }
-
-/* ul {
-  height: 18.875em;
-  width: 34em;
-  margin: 5em auto;
-  padding: 3em 0 0 3em;
-  position: relative;
-  border: 1px solid #160801;
-  border-radius: 1em;
-  background: linear-gradient(
-      to bottom right,
-      rgba(0, 0, 0, 0.3),
-      rgba(0, 0, 0, 0)
-    ),
-    url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/187/vwood.png);
-  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5) inset,
-    0 1px rgba(212, 152, 125, 0.2) inset, 0 5px 15px rgba(0, 0, 0, 0.5);
-} */
 
 li {
   margin: 0;
@@ -132,4 +114,18 @@ ul li:last-child {
 
 .set {
   transform: rotateY(-180deg);
+}
+
+.key-overlay {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.key-overlay.key-press {
+  background: #30ed66;
+}
+
+.key-overlay.hit-target {
+  background: #770087;
 }

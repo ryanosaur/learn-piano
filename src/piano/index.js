@@ -8,12 +8,10 @@ function Piano() {
   function getMIDIMessage(midiMessage) {
     const [state, value, intensity] = midiMessage.data;
     const isActive = state >= 144;
-    setMidiResponse((prevState) => {
-      return {
-        ...prevState,
-        [value]: { isActive, value, intensity },
-      };
-    });
+    setMidiResponse((prevState) => ({
+      ...prevState,
+      [value]: { isActive, value, intensity },
+    }));
   }
 
   const handleMidiResponse = (midiInput) =>
@@ -62,24 +60,27 @@ function Piano() {
 function PianoKey({ keyType, note, midiInput }) {
   const [audioHandler] = useState(new AudioHandler());
   const [lowerKey] = useState(note.replace(/[0-9]/g, "").toLowerCase());
-  const keyValue = KEY_MAP[note];
+  const [keyValue] = useState(KEY_MAP[note]);
   const { value: midiValue, isActive, intensity } = midiInput[keyValue] || {};
-  const isKeyActive = () => isActive && midiValue === keyValue;
   const frequency = audioHandler.midiToFrequency(midiValue);
   audioHandler.setWaveform(WAVEFORM.TRIANGLE);
-  if (isKeyActive()) {
+  if (isActive) {
     audioHandler.playSound(frequency, intensity);
   } else {
     audioHandler.stopSound();
   }
   return (
-    <li className={`${keyType} ${lowerKey} ${isKeyActive() && " active"}`}>
+    <li className={`${keyType} ${lowerKey} ${isActive && " active"}`}>
       <div
+        className="key-overlay hit-target"
         style={{
-          height: "100%",
-          width: "100%",
-          background: "red",
-          opacity: !!intensity ? intensity / 100 : 0,
+          opacity: 0.4,
+        }}
+      />
+      <div
+        className="key-overlay key-press"
+        style={{
+          opacity: !!intensity ? intensity * 0.0078 : 0,
         }}
       />
     </li>
