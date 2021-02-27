@@ -75,6 +75,8 @@ const NOTES = Object.keys(KEY_MAP);
 const SCALE_MAP = {
   major: [2, 2, 1, 2, 2, 2, 1],
   minor: [2, 1, 2, 2, 1, 2, 2],
+  chormatic: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  pentatonic: [3, 2, 3, 2],
 };
 
 const SCALES = Object.keys(SCALE_MAP);
