@@ -74,6 +74,7 @@ const NOTES = Object.keys(KEY_MAP);
 
 const SCALE_MAP = {
   major: [2, 2, 1, 2, 2, 2, 1],
+  minor: [2, 1, 2, 2, 1, 2, 2],
 };
 
 const SCALES = Object.keys(SCALE_MAP);

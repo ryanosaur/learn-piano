@@ -3,7 +3,7 @@ import { onMIDISuccess, onMIDIFailure } from "./midi";
 import { KEY_MAP, WAVEFORM, AudioHandler, generateScaleForNote } from "./utils";
 
 function Piano() {
-  const [selectedNote] = useState("C1");
+  const [selectedNote] = useState("F1");
   const [selectedScale] = useState("major");
   const [lessonState, setLessonState] = useState({
     note: selectedNote,
