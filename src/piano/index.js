@@ -61,15 +61,16 @@ function Piano() {
 }
 
 function PianoKey({ keyType, note, midiInput }) {
+  const [audioHandler] = useState(new AudioHandler());
   const keyValue = KEY_MAP[note];
   const { value: midiValue, isActive } = midiInput[keyValue] || {};
   const isKeyActive = () => isActive && midiValue === keyValue;
   const lowerKey = note.replace(/[0-9]/g, "").toLowerCase();
-  const frequency = AudioHandler.midiToFrequency(midiValue);
+  const frequency = audioHandler.midiToFrequency(midiValue);
   if (isKeyActive()) {
-    AudioHandler.playSound(frequency);
+    audioHandler.playSound(frequency);
   } else {
-    AudioHandler.stopSound();
+    audioHandler.stopSound();
   }
   return (
     <li className={`${keyType} ${lowerKey} ${isKeyActive() && " active"}`} />

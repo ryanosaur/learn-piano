@@ -1,15 +1,15 @@
-const AudioHandler = {
-  context: null,
-  oscillator: null,
-  isStarted: false,
-  getOrCreateContext() {
+function AudioHandler() {
+  this.context = null;
+  this.oscillator = null;
+  this.isStarted = false;
+  this.getOrCreateContext = function () {
     if (!this.context) {
       this.context = new AudioContext();
       this.oscillator = this.context.createOscillator();
       this.oscillator.connect(this.context.destination);
     }
-  },
-  playSound(frequency, type) {
+  };
+  this.playSound = function (frequency, _type) {
     this.getOrCreateContext();
     this.oscillator.frequency.setTargetAtTime(
       frequency,
@@ -22,15 +22,15 @@ const AudioHandler = {
     } else {
       this.context.resume();
     }
-  },
-  stopSound() {
+  };
+  this.stopSound = function () {
     this.getOrCreateContext();
     this.context.suspend();
-  },
-  midiToFrequency(keyValue) {
+  };
+  this.midiToFrequency = function (keyValue) {
     return Math.pow(2, (keyValue - 69) / 12) * 440;
-  },
-};
+  };
+}
 
 const KEY_MAP = {
   C1: 48,
