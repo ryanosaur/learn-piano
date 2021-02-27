@@ -70,5 +70,21 @@ const KEY_MAP = {
   B2: 71,
   C3: 72,
 };
+const NOTES = Object.keys(KEY_MAP);
 
-export { KEY_MAP, WAVEFORM, AudioHandler };
+const SCALE_MAP = {
+  major: [2, 2, 1, 2, 2, 2, 1],
+};
+
+const SCALES = Object.keys(SCALE_MAP);
+
+const generateScaleForNote = (note = "C1", scale = "major") =>
+  SCALE_MAP[scale].reduce(
+    (acc, step) => ({
+      current: acc.current + step,
+      values: [...acc.values, acc.current + step],
+    }),
+    { current: KEY_MAP[note], values: [KEY_MAP[note]] }
+  ).values;
+
+export { KEY_MAP, SCALES, NOTES, WAVEFORM, AudioHandler, generateScaleForNote };

@@ -1,13 +1,27 @@
 import { useEffect, useState } from "react";
 import { onMIDISuccess, onMIDIFailure } from "./midi";
-import { KEY_MAP, WAVEFORM, AudioHandler } from "./utils";
+import { KEY_MAP, WAVEFORM, AudioHandler, generateScaleForNote } from "./utils";
 
 function Piano() {
+  const [selectedNote] = useState("C1");
+  const [selectedScale] = useState("major");
+  const [lessonState, setLessonState] = useState({
+    note: selectedNote,
+    scale: selectedScale,
+    scaleValues: generateScaleForNote(selectedNote, selectedScale),
+  });
+  const nextNote = lessonState.scaleValues[0];
   const [midiInput, setMidiResponse] = useState({});
+
+  const onNotePress = (note) => {
+    if (note !== nextNote) return;
+    const [head, ...rest] = lessonState.scaleValues;
+    setLessonState({ ...lessonState, scaleValues: [...rest, head] });
+  };
 
   function getMIDIMessage(midiMessage) {
     const [state, value, intensity] = midiMessage.data;
-    const isActive = state >= 144;
+    const isActive = state >= 144; // IMPROVE: this is an assumption, and varies based on midi device
     setMidiResponse((prevState) => ({
       ...prevState,
       [value]: { isActive, value, intensity },
@@ -26,46 +40,197 @@ function Piano() {
     <div>
       <div>
         <ul className="set">
-          <PianoKey keyType="white" note="C3" midiInput={midiInput} />
-          <PianoKey keyType="white" note="B2" midiInput={midiInput} />
-          <PianoKey keyType="black" note="AS2" midiInput={midiInput} />
-          <PianoKey keyType="white" note="A2" midiInput={midiInput} />
-          <PianoKey keyType="black" note="GS2" midiInput={midiInput} />
-          <PianoKey keyType="white" note="G2" midiInput={midiInput} />
-          <PianoKey keyType="black" note="FS2" midiInput={midiInput} />
-          <PianoKey keyType="white" note="F2" midiInput={midiInput} />
-          <PianoKey keyType="white" note="E2" midiInput={midiInput} />
-          <PianoKey keyType="black" note="DS2" midiInput={midiInput} />
-          <PianoKey keyType="white" note="D2" midiInput={midiInput} />
-          <PianoKey keyType="black" note="CS2" midiInput={midiInput} />
-          <PianoKey keyType="white" note="C2" midiInput={midiInput} />
-          <PianoKey keyType="white" note="B1" midiInput={midiInput} />
-          <PianoKey keyType="black" note="AS1" midiInput={midiInput} />
-          <PianoKey keyType="white" note="A1" midiInput={midiInput} />
-          <PianoKey keyType="black" note="GS1" midiInput={midiInput} />
-          <PianoKey keyType="white" note="G1" midiInput={midiInput} />
-          <PianoKey keyType="black" note="FS1" midiInput={midiInput} />
-          <PianoKey keyType="white" note="F1" midiInput={midiInput} />
-          <PianoKey keyType="white" note="E1" midiInput={midiInput} />
-          <PianoKey keyType="black" note="DS1" midiInput={midiInput} />
-          <PianoKey keyType="white" note="D1" midiInput={midiInput} />
-          <PianoKey keyType="black" note="CS1" midiInput={midiInput} />
-          <PianoKey keyType="white" note="C1" midiInput={midiInput} />
+          <PianoKey
+            keyType="white"
+            note="C3"
+            nextNote={nextNote}
+            onNotePress={onNotePress}
+            midiInput={midiInput}
+          />
+          <PianoKey
+            keyType="white"
+            note="B2"
+            nextNote={nextNote}
+            onNotePress={onNotePress}
+            midiInput={midiInput}
+          />
+          <PianoKey
+            keyType="black"
+            note="AS2"
+            nextNote={nextNote}
+            onNotePress={onNotePress}
+            midiInput={midiInput}
+          />
+          <PianoKey
+            keyType="white"
+            note="A2"
+            nextNote={nextNote}
+            onNotePress={onNotePress}
+            midiInput={midiInput}
+          />
+          <PianoKey
+            keyType="black"
+            note="GS2"
+            nextNote={nextNote}
+            onNotePress={onNotePress}
+            midiInput={midiInput}
+          />
+          <PianoKey
+            keyType="white"
+            note="G2"
+            nextNote={nextNote}
+            onNotePress={onNotePress}
+            midiInput={midiInput}
+          />
+          <PianoKey
+            keyType="black"
+            note="FS2"
+            nextNote={nextNote}
+            onNotePress={onNotePress}
+            midiInput={midiInput}
+          />
+          <PianoKey
+            keyType="white"
+            note="F2"
+            nextNote={nextNote}
+            onNotePress={onNotePress}
+            midiInput={midiInput}
+          />
+          <PianoKey
+            keyType="white"
+            note="E2"
+            nextNote={nextNote}
+            onNotePress={onNotePress}
+            midiInput={midiInput}
+          />
+          <PianoKey
+            keyType="black"
+            note="DS2"
+            nextNote={nextNote}
+            onNotePress={onNotePress}
+            midiInput={midiInput}
+          />
+          <PianoKey
+            keyType="white"
+            note="D2"
+            nextNote={nextNote}
+            onNotePress={onNotePress}
+            midiInput={midiInput}
+          />
+          <PianoKey
+            keyType="black"
+            note="CS2"
+            nextNote={nextNote}
+            onNotePress={onNotePress}
+            midiInput={midiInput}
+          />
+          <PianoKey
+            keyType="white"
+            note="C2"
+            nextNote={nextNote}
+            onNotePress={onNotePress}
+            midiInput={midiInput}
+          />
+          <PianoKey
+            keyType="white"
+            note="B1"
+            nextNote={nextNote}
+            onNotePress={onNotePress}
+            midiInput={midiInput}
+          />
+          <PianoKey
+            keyType="black"
+            note="AS1"
+            nextNote={nextNote}
+            onNotePress={onNotePress}
+            midiInput={midiInput}
+          />
+          <PianoKey
+            keyType="white"
+            note="A1"
+            nextNote={nextNote}
+            onNotePress={onNotePress}
+            midiInput={midiInput}
+          />
+          <PianoKey
+            keyType="black"
+            note="GS1"
+            nextNote={nextNote}
+            onNotePress={onNotePress}
+            midiInput={midiInput}
+          />
+          <PianoKey
+            keyType="white"
+            note="G1"
+            nextNote={nextNote}
+            onNotePress={onNotePress}
+            midiInput={midiInput}
+          />
+          <PianoKey
+            keyType="black"
+            note="FS1"
+            nextNote={nextNote}
+            onNotePress={onNotePress}
+            midiInput={midiInput}
+          />
+          <PianoKey
+            keyType="white"
+            note="F1"
+            nextNote={nextNote}
+            onNotePress={onNotePress}
+            midiInput={midiInput}
+          />
+          <PianoKey
+            keyType="white"
+            note="E1"
+            nextNote={nextNote}
+            onNotePress={onNotePress}
+            midiInput={midiInput}
+          />
+          <PianoKey
+            keyType="black"
+            note="DS1"
+            nextNote={nextNote}
+            onNotePress={onNotePress}
+            midiInput={midiInput}
+          />
+          <PianoKey
+            keyType="white"
+            note="D1"
+            nextNote={nextNote}
+            onNotePress={onNotePress}
+            midiInput={midiInput}
+          />
+          <PianoKey
+            keyType="black"
+            note="CS1"
+            nextNote={nextNote}
+            onNotePress={onNotePress}
+            midiInput={midiInput}
+          />
+          <PianoKey
+            keyType="white"
+            note="C1"
+            nextNote={nextNote}
+            onNotePress={onNotePress}
+            midiInput={midiInput}
+          />
         </ul>
       </div>
     </div>
   );
 }
 
-function PianoKey({ keyType, note, midiInput }) {
+function PianoKey({ keyType, note, midiInput, nextNote, onNotePress }) {
   const [audioHandler] = useState(new AudioHandler());
   const [lowerKey] = useState(note.replace(/[0-9]/g, "").toLowerCase());
   const [keyValue] = useState(KEY_MAP[note]);
-  const { value: midiValue, isActive, intensity } = midiInput[keyValue] || {};
-  const frequency = audioHandler.midiToFrequency(midiValue);
+  const { isActive, intensity } = midiInput[keyValue] || {};
+  const frequency = audioHandler.midiToFrequency(keyValue);
   audioHandler.setWaveform(WAVEFORM.TRIANGLE);
   if (isActive) {
     audioHandler.playSound(frequency, intensity);
+    nextNote !== keyValue || onNotePress(keyValue);
   } else {
     audioHandler.stopSound();
   }
@@ -74,7 +239,7 @@ function PianoKey({ keyType, note, midiInput }) {
       <div
         className="key-overlay hit-target"
         style={{
-          opacity: 0.4,
+          opacity: nextNote === keyValue ? 0.4 : 0,
         }}
       />
       <div
