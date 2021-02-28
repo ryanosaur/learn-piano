@@ -8,21 +8,26 @@ const WAVEFORM = {
 function AudioHandler() {
   this.context = null;
   this.oscillator = null;
+  this.gainNode = null;
   this.isStarted = false;
   this.getOrCreateContext = function () {
     if (!this.context) {
       this.context = new AudioContext();
       this.oscillator = this.context.createOscillator();
-      this.oscillator.connect(this.context.destination);
+      this.gainNode = this.context.createGain();
+      this.oscillator.connect(this.gainNode);
+      this.gainNode.connect(this.context.destination);
+      this.gainNode.gain.value = 0.0;
     }
   };
-  this.playSound = function (frequency, _intensity) {
+  this.playSound = function (frequency, intensity) {
     this.getOrCreateContext();
     this.oscillator.frequency.setTargetAtTime(
       frequency,
       this.context.currentTime,
       0
     );
+    this.gainNode.gain.value = intensity * 0.0078;
     if (!this.isStarted) {
       this.oscillator.start(0);
       this.isStarted = true;
