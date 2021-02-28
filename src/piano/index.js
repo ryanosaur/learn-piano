@@ -1,9 +1,20 @@
 import { useEffect, useState } from "react";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import Paper from "@material-ui/core/Paper";
+
 import { onMIDISuccess, onMIDIFailure } from "./midi";
-import { KEY_MAP, WAVEFORM, AudioHandler, generateScaleForNote } from "./utils";
+import {
+  KEY_MAP,
+  NOTES,
+  WAVEFORM,
+  AudioHandler,
+  generateScaleForNote,
+} from "./utils";
 
 function Piano() {
-  const [selectedNote] = useState("F1");
+  const [selectedNote, setSelectedNote] = useState("F1");
   const [selectedScale] = useState("major");
   const [lessonState, setLessonState] = useState({
     note: selectedNote,
@@ -35,9 +46,34 @@ function Piano() {
     []
   );
 
+  const handleNoteSelection = (event) => {
+    const note = event.target.value;
+    setSelectedNote(note);
+    setLessonState({
+      ...lessonState,
+      note: note,
+      scaleValues: generateScaleForNote(note, selectedScale),
+    });
+  };
   return (
     <div>
-      <div>
+      <Paper elevation={3} className="filters">
+        <InputLabel id="note-select-label">Note:</InputLabel>
+        <Select
+          labelId="note-select-label"
+          id="note-select"
+          value={selectedNote}
+          onChange={handleNoteSelection}
+          autoWidth
+        >
+          {NOTES.map((note) => (
+            <MenuItem key={note} id={note} value={note}>
+              {note}
+            </MenuItem>
+          ))}
+        </Select>
+      </Paper>
+      <div className="piano">
         <ul className="set">
           <PianoKey
             keyType="white"

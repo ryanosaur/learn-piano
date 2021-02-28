@@ -133,3 +133,7 @@ ul li:last-child {
 .key-overlay.potential-hit-target {
   background: #fafa86;
 }
+
+.filters {
+  padding: 5px;
+}
