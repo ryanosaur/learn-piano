@@ -49,7 +49,13 @@ function Piano() {
 
   function getMIDIMessage(midiMessage) {
     const [state, value, intensity] = midiMessage.data;
-    const isActive = state >= 144; // IMPROVE: this is an assumption, and varies based on midi device
+    /**
+     * IMPROVE: state >= 144 is an assumption, and varies based on midi device.
+     * create some way of have users map their midi keys, and save their configuration
+     * to localStorage. would also be good to anonomously measure to understand the
+     * full range of midi setups
+     */
+    const isActive = state >= 144;
     setMidiResponse((prevState) => ({
       ...prevState,
       [value]: { isActive, value, intensity },
