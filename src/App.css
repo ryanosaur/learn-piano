@@ -135,5 +135,10 @@ ul li:last-child {
 }
 
 .filters {
-  padding: 5px;
+  padding: 10px;
+  display: flex;
+}
+
+.filters .filter {
+  margin-right: 10px;
 }

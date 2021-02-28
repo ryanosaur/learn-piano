@@ -8,6 +8,7 @@ import { onMIDISuccess, onMIDIFailure } from "./midi";
 import {
   KEY_MAP,
   NOTES,
+  SCALES,
   WAVEFORM,
   AudioHandler,
   generateScaleForNote,
@@ -15,7 +16,7 @@ import {
 
 function Piano() {
   const [selectedNote, setSelectedNote] = useState("F1");
-  const [selectedScale] = useState("major");
+  const [selectedScale, setSelectedScale] = useState("major");
   const [lessonState, setLessonState] = useState({
     note: selectedNote,
     scale: selectedScale,
@@ -55,23 +56,52 @@ function Piano() {
       scaleValues: generateScaleForNote(note, selectedScale),
     });
   };
+
+  const handleScaleSelection = (event) => {
+    const scale = event.target.value;
+    setSelectedScale(scale);
+    setLessonState({
+      ...lessonState,
+      scale: scale,
+      scaleValues: generateScaleForNote(selectedNote, scale),
+    });
+  };
   return (
     <div>
       <Paper elevation={3} className="filters">
-        <InputLabel id="note-select-label">Note:</InputLabel>
-        <Select
-          labelId="note-select-label"
-          id="note-select"
-          value={selectedNote}
-          onChange={handleNoteSelection}
-          autoWidth
-        >
-          {NOTES.map((note) => (
-            <MenuItem key={note} id={note} value={note}>
-              {note}
-            </MenuItem>
-          ))}
-        </Select>
+        <div className="filter note-filter">
+          <InputLabel id="note-select-label">Note:</InputLabel>
+          <Select
+            labelId="note-select-label"
+            id="note-select"
+            value={selectedNote}
+            onChange={handleNoteSelection}
+            autoWidth
+          >
+            {NOTES.map((note) => (
+              <MenuItem key={note} id={note} value={note}>
+                {note}
+              </MenuItem>
+            ))}
+          </Select>
+        </div>
+
+        <div className="filter scale-filter">
+          <InputLabel id="scale-select-label">Scale:</InputLabel>
+          <Select
+            labelId="scale-select-label"
+            id="scale-select"
+            value={selectedScale}
+            onChange={handleScaleSelection}
+            autoWidth
+          >
+            {SCALES.map((scale) => (
+              <MenuItem key={scale} id={scale} value={scale}>
+                {scale}
+              </MenuItem>
+            ))}
+          </Select>
+        </div>
       </Paper>
       <div className="piano">
         <ul className="set">
@@ -266,6 +296,7 @@ function PianoKey({ keyType, note, midiInput, onNotePress, lessonState }) {
   audioHandler.setWaveform(WAVEFORM.TRIANGLE);
   if (isActive) {
     audioHandler.playSound(frequency, intensity);
+    // IMPROVE: onNotePress should happen on midi event, not during render
     nextNote !== keyValue || onNotePress(keyValue);
   } else {
     audioHandler.stopSound();
