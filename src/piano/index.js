@@ -3,6 +3,8 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import Paper from "@material-ui/core/Paper";
+import Switch from "@material-ui/core/Switch";
+import { withStyles } from "@material-ui/core/styles";
 
 import { onMIDISuccess, onMIDIFailure } from "./midi";
 import {
@@ -14,6 +16,20 @@ import {
   generateScaleForNote,
 } from "./utils";
 
+const PurpleSwitch = withStyles({
+  switchBase: {
+    color: "#FCBBFD",
+    "&$checked": {
+      color: "#770087",
+    },
+    "&$checked + $track": {
+      backgroundColor: "#FCBBFD",
+    },
+  },
+  checked: {},
+  track: {},
+})(Switch);
+
 function Piano() {
   const [selectedNote, setSelectedNote] = useState("F1");
   const [selectedScale, setSelectedScale] = useState("major");
@@ -22,6 +38,7 @@ function Piano() {
     scale: selectedScale,
     scaleValues: generateScaleForNote(selectedNote, selectedScale),
   });
+  const [shouldHighlightScale, setShouldHighlightScalse] = useState(true);
   const [midiInput, setMidiResponse] = useState({});
 
   const onNotePress = (note) => {
@@ -66,6 +83,11 @@ function Piano() {
       scaleValues: generateScaleForNote(selectedNote, scale),
     });
   };
+
+  const handleHighlightToggleChange = (_event) => {
+    setShouldHighlightScalse(!shouldHighlightScale);
+  };
+
   return (
     <div>
       <Paper elevation={3} className="filters">
@@ -102,6 +124,17 @@ function Piano() {
             ))}
           </Select>
         </div>
+        <div className="filter scale-highlighting-toggle">
+          <InputLabel id="hightlight-toggle-label">
+            Scale Highlighting:
+          </InputLabel>
+          <PurpleSwitch
+            labelId="hightlight-toggle-label"
+            id="hightlight-toggle"
+            checked={shouldHighlightScale}
+            onChange={handleHighlightToggleChange}
+          />
+        </div>
       </Paper>
       <div className="piano">
         <ul className="set">
@@ -111,6 +144,7 @@ function Piano() {
             onNotePress={onNotePress}
             midiInput={midiInput}
             lessonState={lessonState}
+            shouldHighlightScale={shouldHighlightScale}
           />
           <PianoKey
             keyType="white"
@@ -118,6 +152,7 @@ function Piano() {
             onNotePress={onNotePress}
             midiInput={midiInput}
             lessonState={lessonState}
+            shouldHighlightScale={shouldHighlightScale}
           />
           <PianoKey
             keyType="black"
@@ -125,6 +160,7 @@ function Piano() {
             onNotePress={onNotePress}
             midiInput={midiInput}
             lessonState={lessonState}
+            shouldHighlightScale={shouldHighlightScale}
           />
           <PianoKey
             keyType="white"
@@ -132,6 +168,7 @@ function Piano() {
             onNotePress={onNotePress}
             midiInput={midiInput}
             lessonState={lessonState}
+            shouldHighlightScale={shouldHighlightScale}
           />
           <PianoKey
             keyType="black"
@@ -139,6 +176,7 @@ function Piano() {
             onNotePress={onNotePress}
             midiInput={midiInput}
             lessonState={lessonState}
+            shouldHighlightScale={shouldHighlightScale}
           />
           <PianoKey
             keyType="white"
@@ -146,6 +184,7 @@ function Piano() {
             onNotePress={onNotePress}
             midiInput={midiInput}
             lessonState={lessonState}
+            shouldHighlightScale={shouldHighlightScale}
           />
           <PianoKey
             keyType="black"
@@ -153,6 +192,7 @@ function Piano() {
             onNotePress={onNotePress}
             midiInput={midiInput}
             lessonState={lessonState}
+            shouldHighlightScale={shouldHighlightScale}
           />
           <PianoKey
             keyType="white"
@@ -160,6 +200,7 @@ function Piano() {
             onNotePress={onNotePress}
             midiInput={midiInput}
             lessonState={lessonState}
+            shouldHighlightScale={shouldHighlightScale}
           />
           <PianoKey
             keyType="white"
@@ -167,6 +208,7 @@ function Piano() {
             onNotePress={onNotePress}
             midiInput={midiInput}
             lessonState={lessonState}
+            shouldHighlightScale={shouldHighlightScale}
           />
           <PianoKey
             keyType="black"
@@ -174,6 +216,7 @@ function Piano() {
             onNotePress={onNotePress}
             midiInput={midiInput}
             lessonState={lessonState}
+            shouldHighlightScale={shouldHighlightScale}
           />
           <PianoKey
             keyType="white"
@@ -181,6 +224,7 @@ function Piano() {
             onNotePress={onNotePress}
             midiInput={midiInput}
             lessonState={lessonState}
+            shouldHighlightScale={shouldHighlightScale}
           />
           <PianoKey
             keyType="black"
@@ -188,6 +232,7 @@ function Piano() {
             onNotePress={onNotePress}
             midiInput={midiInput}
             lessonState={lessonState}
+            shouldHighlightScale={shouldHighlightScale}
           />
           <PianoKey
             keyType="white"
@@ -195,6 +240,7 @@ function Piano() {
             onNotePress={onNotePress}
             midiInput={midiInput}
             lessonState={lessonState}
+            shouldHighlightScale={shouldHighlightScale}
           />
           <PianoKey
             keyType="white"
@@ -202,6 +248,7 @@ function Piano() {
             onNotePress={onNotePress}
             midiInput={midiInput}
             lessonState={lessonState}
+            shouldHighlightScale={shouldHighlightScale}
           />
           <PianoKey
             keyType="black"
@@ -209,6 +256,7 @@ function Piano() {
             onNotePress={onNotePress}
             midiInput={midiInput}
             lessonState={lessonState}
+            shouldHighlightScale={shouldHighlightScale}
           />
           <PianoKey
             keyType="white"
@@ -216,6 +264,7 @@ function Piano() {
             onNotePress={onNotePress}
             midiInput={midiInput}
             lessonState={lessonState}
+            shouldHighlightScale={shouldHighlightScale}
           />
           <PianoKey
             keyType="black"
@@ -223,6 +272,7 @@ function Piano() {
             onNotePress={onNotePress}
             midiInput={midiInput}
             lessonState={lessonState}
+            shouldHighlightScale={shouldHighlightScale}
           />
           <PianoKey
             keyType="white"
@@ -230,6 +280,7 @@ function Piano() {
             onNotePress={onNotePress}
             midiInput={midiInput}
             lessonState={lessonState}
+            shouldHighlightScale={shouldHighlightScale}
           />
           <PianoKey
             keyType="black"
@@ -237,6 +288,7 @@ function Piano() {
             onNotePress={onNotePress}
             midiInput={midiInput}
             lessonState={lessonState}
+            shouldHighlightScale={shouldHighlightScale}
           />
           <PianoKey
             keyType="white"
@@ -244,6 +296,7 @@ function Piano() {
             onNotePress={onNotePress}
             midiInput={midiInput}
             lessonState={lessonState}
+            shouldHighlightScale={shouldHighlightScale}
           />
           <PianoKey
             keyType="white"
@@ -251,6 +304,7 @@ function Piano() {
             onNotePress={onNotePress}
             midiInput={midiInput}
             lessonState={lessonState}
+            shouldHighlightScale={shouldHighlightScale}
           />
           <PianoKey
             keyType="black"
@@ -258,6 +312,7 @@ function Piano() {
             onNotePress={onNotePress}
             midiInput={midiInput}
             lessonState={lessonState}
+            shouldHighlightScale={shouldHighlightScale}
           />
           <PianoKey
             keyType="white"
@@ -265,6 +320,7 @@ function Piano() {
             onNotePress={onNotePress}
             midiInput={midiInput}
             lessonState={lessonState}
+            shouldHighlightScale={shouldHighlightScale}
           />
           <PianoKey
             keyType="black"
@@ -272,6 +328,7 @@ function Piano() {
             onNotePress={onNotePress}
             midiInput={midiInput}
             lessonState={lessonState}
+            shouldHighlightScale={shouldHighlightScale}
           />
           <PianoKey
             keyType="white"
@@ -279,6 +336,7 @@ function Piano() {
             onNotePress={onNotePress}
             midiInput={midiInput}
             lessonState={lessonState}
+            shouldHighlightScale={shouldHighlightScale}
           />
         </ul>
       </div>
@@ -286,7 +344,14 @@ function Piano() {
   );
 }
 
-function PianoKey({ keyType, note, midiInput, onNotePress, lessonState }) {
+function PianoKey({
+  keyType,
+  note,
+  midiInput,
+  onNotePress,
+  lessonState,
+  shouldHighlightScale,
+}) {
   const [audioHandler] = useState(new AudioHandler());
   const [lowerKey] = useState(note.replace(/[0-9]/g, "").toLowerCase());
   const [keyValue] = useState(KEY_MAP[note]);
@@ -303,12 +368,14 @@ function PianoKey({ keyType, note, midiInput, onNotePress, lessonState }) {
   }
   return (
     <li className={`${keyType} ${lowerKey} ${isActive && " active"}`}>
-      <div
-        className="key-overlay potential-hit-target"
-        style={{
-          opacity: lessonState.scaleValues.includes(keyValue) ? 0.4 : 0,
-        }}
-      />
+      {shouldHighlightScale && (
+        <div
+          className="key-overlay potential-hit-target"
+          style={{
+            opacity: lessonState.scaleValues.includes(keyValue) ? 0.4 : 0,
+          }}
+        />
+      )}
       <div
         className="key-overlay hit-target"
         style={{
